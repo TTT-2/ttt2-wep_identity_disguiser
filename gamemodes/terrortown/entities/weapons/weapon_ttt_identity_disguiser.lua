@@ -1,7 +1,7 @@
 if SERVER then
 	AddCSLuaFile()
 
-	resource.AddFile("materials/vgui/ttt/icon_indentiy_disguiser.vmt")
+	resource.AddFile("materials/vgui/ttt/icon_identity_disguiser.vmt")
 	resource.AddFile("materials/vgui/ttt/icon_identity_disguised_hud.vmt")
 end
 
@@ -18,7 +18,7 @@ if CLIENT then
 		desc = "weapon_indentiy_disguiser_desc"
 	}
 
-	SWEP.Icon = "vgui/ttt/icon_indentiy_disguiser"
+	SWEP.Icon = "vgui/ttt/icon_identity_disguiser"
 end
 
 SWEP.Kind = WEAPON_EQUIP2
