@@ -11,6 +11,8 @@ if SERVER then
 		net.WriteEntity(target)
 		net.Send(self)
 
+		if not IsValid(target) or not target:IsPlayer() then return end
+
 		LANG.Msg(self, "identity_disguiser_new_target", {name = target:Nick()}, MSG_MSTACK_PLAIN)
 	end
 
@@ -20,16 +22,22 @@ if SERVER then
 		self.disguiserTargetActivated = true
 		self.disguiserTarget = self.storedDisguiserTarget
 
+		self.disguiserDefaultModel = self:GetModel()
+
+		self:SetModel(self.storedDisguiserTarget:GetModel())
+
 		net.Start("TTT2ToggleDisguiserTarget")
 		net.WriteBool(true)
 		net.WriteEntity(self)
-		net.WriteEntity(self:GetDisguiserTarget())
+		net.WriteEntity(self.storedDisguiserTarget)
 		net.Broadcast()
 	end
 
 	function plymeta:DeactivateDisguiserTarget()
 		self.disguiserTargetActivated = false
 		self.disguiserTarget = nil
+
+		self:SetModel(self.disguiserDefaultModel)
 
 		net.Start("TTT2ToggleDisguiserTarget")
 		net.WriteBool(false)
