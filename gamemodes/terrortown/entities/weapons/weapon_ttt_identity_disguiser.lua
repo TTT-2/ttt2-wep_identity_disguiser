@@ -88,6 +88,24 @@ if CLIENT then
 
 		return oldEnt:GetDisguiserTarget()
 	end)
+
+	hook.Add("TTTRenderEntityInfo", "ttt2_identity_disguiser_update_data", function(tData)
+		local unchangedEnt = tData:GetUnchangedEntity()
+		local ent = tData:GetEntity()
+
+		if not IsValid(unchangedEnt) or unchangedEnt:GetDisguiserTarget() ~= ent then return end
+
+		-- has to be a player
+		if not ent:IsPlayer() then return end
+
+		-- add title and subtitle to the focused ent
+		local h_string, h_color = util.HealthToString(unchangedEnt:Health(), unchangedEnt:GetMaxHealth())
+
+		tData:SetSubtitle(
+			LANG.TryTranslation(h_string),
+			h_color
+		)
+	end)
 end
 
 if SERVER then

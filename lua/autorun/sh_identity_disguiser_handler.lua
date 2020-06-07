@@ -37,7 +37,11 @@ if SERVER then
 		self.disguiserTargetActivated = false
 		self.disguiserTarget = nil
 
-		self:SetModel(self.disguiserDefaultModel)
+		if self.disguiserDefaultModel then
+			self:SetModel(self.disguiserDefaultModel)
+
+			self.disguiserDefaultModel = nil
+		end
 
 		net.Start("TTT2ToggleDisguiserTarget")
 		net.WriteBool(false)
