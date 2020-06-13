@@ -78,6 +78,27 @@ function SWEP:SecondaryAttack()
 	owner:ToggleDisguiserTarget()
 end
 
+if SERVER then
+	function SWEP:Deploy()
+		self.BaseClass.Deploy(self)
+
+		-- store owner in extra variable because the owner isn't valid
+		-- once OnDrop is called
+		self.notifyOwner = self:GetOwner()
+	end
+
+	function SWEP:OnDrop()
+		self.BaseClass.OnDrop(self)
+
+		if not IsValid(self.notifyOwner) then return end
+
+		self.notifyOwner:DeactivateDisguiserTarget()
+		self.notifyOwner:UpdateStoredDisguiserTarget(nil)
+
+		self.notifyOwner = nil
+	end
+end
+
 if CLIENT then
 	function SWEP:Initialize()
 		self:AddHUDHelp("idisguise_help_msb1", "idisguise_help_msb2", true)
