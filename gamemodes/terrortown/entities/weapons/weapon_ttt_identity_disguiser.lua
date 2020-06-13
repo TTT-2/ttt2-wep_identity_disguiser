@@ -62,10 +62,10 @@ function SWEP:PrimaryAttack()
 	if not IsValid(ent) or distance > 100 then return end
 
 	if ent:IsPlayer() then
-		owner:UpdateStoredDisguiserTarget(ent)
+		owner:UpdateStoredDisguiserTarget(ent, ent:GetModel(), ent:GetSkin())
 		owner:DeactivateDisguiserTarget()
 	elseif ent:GetClass() == "prop_ragdoll" and CORPSE.IsValidBody(ent) then
-		owner:UpdateStoredDisguiserTarget(CORPSE.GetPlayer(ent))
+		owner:UpdateStoredDisguiserTarget(CORPSE.GetPlayer(ent), ent:GetModel(), ent:GetSkin())
 		owner:DeactivateDisguiserTarget()
 	end
 end

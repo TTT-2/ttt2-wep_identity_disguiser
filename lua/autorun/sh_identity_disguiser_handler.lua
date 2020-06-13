@@ -4,8 +4,10 @@ if SERVER then
 	util.AddNetworkString("TTT2UpdateDisguiserTarget")
 	util.AddNetworkString("TTT2ToggleDisguiserTarget")
 
-	function plymeta:UpdateStoredDisguiserTarget(target)
+	function plymeta:UpdateStoredDisguiserTarget(target, model, skin)
 		self.storedDisguiserTarget = target
+		self.disguiserStoredModel = model
+		self.disguiserStoredSkin = skin
 
 		net.Start("TTT2UpdateDisguiserTarget")
 		net.WriteEntity(target)
@@ -22,31 +24,46 @@ if SERVER then
 		self.disguiserTargetActivated = true
 		self.disguiserTarget = self.storedDisguiserTarget
 
-		self.disguiserDefaultModel = self:GetModel()
-
-		self:SetModel(self.storedDisguiserTarget:GetModel())
-
 		net.Start("TTT2ToggleDisguiserTarget")
 		net.WriteBool(true)
 		net.WriteEntity(self)
 		net.WriteEntity(self.storedDisguiserTarget)
 		net.Broadcast()
+
+		-- UPDATE MODEL
+		self.disguiserDefaultModel = self:GetModel()
+		self.disguiserDefaultSkin = self:GetSkin()
+
+		if self.disguiserStoredModel then
+			self:SetModel(self.disguiserStoredModel)
+		end
+
+		if self.disguiserStoredSkin then
+			self:SetSkin(self.disguiserStoredSkin)
+		end
 	end
 
 	function plymeta:DeactivateDisguiserTarget()
 		self.disguiserTargetActivated = false
 		self.disguiserTarget = nil
 
+		net.Start("TTT2ToggleDisguiserTarget")
+		net.WriteBool(false)
+		net.WriteEntity(self)
+		net.Broadcast()
+
+		-- UPDATE MODEL
 		if self.disguiserDefaultModel then
 			self:SetModel(self.disguiserDefaultModel)
 
 			self.disguiserDefaultModel = nil
 		end
 
-		net.Start("TTT2ToggleDisguiserTarget")
-		net.WriteBool(false)
-		net.WriteEntity(self)
-		net.Broadcast()
+		if self.disguiserDefaultSkin then
+			self:SetSkin(self.disguiserDefaultSkin)
+
+			self.disguiserDefaultSkin = nil
+		end
 	end
 
 	function plymeta:ToggleDisguiserTarget()
