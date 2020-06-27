@@ -78,6 +78,15 @@ function SWEP:SecondaryAttack()
 	owner:ToggleDisguiserTarget()
 end
 
+function SWEP:Reload()
+	if CLIENT then return end
+
+	local owner = self:GetOwner()
+
+	owner:DeactivateDisguiserTarget()
+	owner:UpdateStoredDisguiserTarget(nil)
+end
+
 if SERVER then
 	function SWEP:Deploy()
 		self.BaseClass.Deploy(self)
@@ -101,7 +110,8 @@ end
 
 if CLIENT then
 	function SWEP:Initialize()
-		self:AddHUDHelp("idisguise_help_msb1", "idisguise_help_msb2", true)
+		self:AddTTT2HUDHelp("idisguise_help_msb1", "idisguise_help_msb2")
+		self:AddHUDHelpLine("idisguise_help_rld", Key("+reload", "R"))
 	end
 
 	hook.Add("TTTModifyTargetedEntity", "ttt2_identity_disguiser_change_ent", function(oldEnt, distance)
