@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("italiano")
+local L = LANG.GetLanguageTableReference("italiano")
 
 L["weapon_indentiy_disguiser_name"] = "Travestimento avanzato"
 L["weapon_indentiy_disguiser_desc"] = "Ricevi l'identità di un'altro giocatore o un cadavere e fai finta di essere lui."
