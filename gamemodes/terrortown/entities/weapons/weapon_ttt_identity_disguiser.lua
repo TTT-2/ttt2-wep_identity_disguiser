@@ -124,10 +124,10 @@ if CLIENT then
 		local unchangedEnt = tData:GetUnchangedEntity()
 		local ent = tData:GetEntity()
 
-		if not IsValid(unchangedEnt) or unchangedEnt:GetDisguiserTarget() ~= ent then return end
-
 		-- has to be a player
-		if not ent:IsPlayer() then return end
+		if not IsPlayer(ent) then return end
+
+		if not IsValid(unchangedEnt) or unchangedEnt:GetDisguiserTarget() ~= ent then return end
 
 		-- add title and subtitle to the focused ent
 		local h_string, h_color = util.HealthToString(unchangedEnt:Health(), unchangedEnt:GetMaxHealth())
