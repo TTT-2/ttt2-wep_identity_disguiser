@@ -127,7 +127,7 @@ if CLIENT then
 		-- has to be a player
 		if not IsPlayer(ent) then return end
 
-		if not IsValid(unchangedEnt) or IsPlayer(unchangedEnt) or unchangedEnt:GetDisguiserTarget() ~= ent then return end
+		if not IsValid(unchangedEnt) or not IsPlayer(unchangedEnt) or unchangedEnt:GetDisguiserTarget() ~= ent then return end
 
 		-- add title and subtitle to the focused ent
 		local h_string, h_color = util.HealthToString(unchangedEnt:Health(), unchangedEnt:GetMaxHealth())
