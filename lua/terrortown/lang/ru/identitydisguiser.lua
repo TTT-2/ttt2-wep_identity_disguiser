@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("Русский")
+L = LANG.GetLanguageTableReference("ru")
 
 L["weapon_indentiy_disguiser_name"] = "Маскировка личности"
 L["weapon_indentiy_disguiser_desc"] = "Выясните личность другого игрока или труп, чтобы представить себя им."

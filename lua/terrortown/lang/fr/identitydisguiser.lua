@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("french")
+L = LANG.GetLanguageTableReference("fr")
 
 L["weapon_indentiy_disguiser_name"] = "Déguisement d'identité"
 L["weapon_indentiy_disguiser_desc"] = "Volez l'identité d'un autre joueur ou d'un cadavre pour prétendre que vous êtes eux."

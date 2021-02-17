@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("deutsch")
+L = LANG.GetLanguageTableReference("de")
 
 L["weapon_indentiy_disguiser_name"] = "Identitäsverstecker"
 L["weapon_indentiy_disguiser_desc"] = "Kopiere die Identität eines anderen Spielers und gib dich als ihn aus."
