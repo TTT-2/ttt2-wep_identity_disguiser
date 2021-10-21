@@ -114,11 +114,14 @@ if CLIENT then
 		self:AddHUDHelpLine("idisguise_help_rld", Key("+reload", "R"))
 	end
 
-	hook.Add("TTTModifyTargetedEntity", "ttt2_identity_disguiser_change_ent", function(oldEnt, distance)
-		if not oldEnt:IsPlayer() or not oldEnt:HasDisguiserTarget() then return end
+	local function ModifyTarget(oldPly)
+		if not oldPly:IsPlayer() or not oldPly:HasDisguiserTarget() then return end
 
-		return oldEnt:GetDisguiserTarget()
-	end)
+		return oldPly:GetDisguiserTarget()
+	end
+
+	hook.Add("TTTModifyTargetedEntity", "ttt2_identity_disguiser_change_ent", ModifyTarget)
+	hook.Add("TTT2ModifyRadioTarget", "ttt2_identity_disguiser_change_ent_radio", ModifyTarget)
 
 	hook.Add("TTTRenderEntityInfo", "ttt2_identity_disguiser_update_data", function(tData)
 		local unchangedEnt = tData:GetUnchangedEntity()
