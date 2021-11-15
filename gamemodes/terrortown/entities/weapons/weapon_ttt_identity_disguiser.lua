@@ -123,6 +123,21 @@ if CLIENT then
 	hook.Add("TTTModifyTargetedEntity", "ttt2_identity_disguiser_change_ent", ModifyTarget)
 	hook.Add("TTT2ModifyRadioTarget", "ttt2_identity_disguiser_change_ent_radio", ModifyTarget)
 
+	hook.Add("TTT2ModifyOverheadIcon", "ModifyDisguiserOHI", function(ply, shouldDrawDefault)
+		if not ply:IsPlayer() or not ply:HasDisguiserTarget() then return end
+
+		local client = LocalPlayer()
+		local target = ply:GetDisguiserTarget()
+		local rd = target:GetSubRoleData()
+
+		local shouldShow = target:IsActive()
+			and target:HasRole()
+			and (not client:IsActive() or target:IsInTeam(client) or rd.isPublicRole)
+			and not rd.avoidTeamIcons
+
+		return shouldShow, target:GetSubRoleData().iconMaterial, target:GetRoleColor()
+	end)
+
 	hook.Add("TTTRenderEntityInfo", "ttt2_identity_disguiser_update_data", function(tData)
 		local unchangedEnt = tData:GetUnchangedEntity()
 		local ent = tData:GetEntity()
