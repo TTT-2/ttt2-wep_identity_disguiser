@@ -8,3 +8,4 @@ L["idisguise_help_rld"] = "Сбрасывает маскировку лично�
 L["identity_disguiser_new_target"] = "Получен образец игрока {name} и сохранён как цель."
 L["identity_disguiser_hud"] = "{name}"
 L["identity_disguiser_hud_active"] = "{name} (active)"
+--L["identity_disguiser_targetid_teammate"] = "(Disguised as {name})"

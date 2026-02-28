@@ -114,8 +114,15 @@ if CLIENT then
 		self:AddHUDHelpLine("idisguise_help_rld", Key("+reload", "R"))
 	end
 
+	local function CanSeeRealIdentity(ply)
+		local client = LocalPlayer()
+		return (not client:IsInnocent() and client:GetTeam() ~= TEAM_NONE and client:IsInTeam(ply)) or client:IsSpec()
+	end
+
 	local function ModifyTarget(oldPly)
 		if not oldPly:IsPlayer() or not oldPly:HasDisguiserTarget() then return end
+
+		if CanSeeRealIdentity(oldPly) then return end
 
 		return oldPly:GetDisguiserTarget()
 	end
@@ -125,6 +132,8 @@ if CLIENT then
 
 	hook.Add("TTT2ModifyOverheadIcon", "ModifyDisguiserOHI", function(ply, shouldDrawDefault)
 		if not ply:IsPlayer() or not ply:HasDisguiserTarget() then return end
+
+		if CanSeeRealIdentity(ply) then return end
 
 		local client = LocalPlayer()
 		local target = ply:GetDisguiserTarget()
@@ -141,14 +150,28 @@ if CLIENT then
 	hook.Add("TTTRenderEntityInfo", "ttt2_identity_disguiser_update_data", function(tData)
 		local unchangedEnt = tData:GetUnchangedEntity()
 		local ent = tData:GetEntity()
+		local realEnt = IsValid(unchangedEnt) and unchangedEnt or ent
 
 		-- has to be a player
-		if not IsPlayer(ent) then return end
+		if not IsPlayer(ent) or not IsPlayer(realEnt) then return end
 
-		if not IsValid(unchangedEnt) or not IsPlayer(unchangedEnt) or unchangedEnt:GetDisguiserTarget() ~= ent then return end
+		local disguiserTarget = realEnt:GetDisguiserTarget()
+
+		-- the real identity is shown to players on the same (non-innocent) team, and to spectators
+		-- in this case, tell the viewer who the user is disguising as
+		if realEnt:HasDisguiserTarget() and IsValid(disguiserTarget) and CanSeeRealIdentity(realEnt) then
+			tData:AddDescriptionLine(
+				LANG.GetParamTranslation("identity_disguiser_targetid_teammate", {
+					name = disguiserTarget:Nick()
+				}),
+				COLOR_ORANGE
+			)
+		end
+
+		if disguiserTarget ~= ent then return end
 
 		-- add title and subtitle to the focused ent
-		local h_string, h_color = util.HealthToString(unchangedEnt:Health(), unchangedEnt:GetMaxHealth())
+		local h_string, h_color = util.HealthToString(realEnt:Health(), realEnt:GetMaxHealth())
 
 		tData:SetSubtitle(
 			LANG.TryTranslation(h_string),
